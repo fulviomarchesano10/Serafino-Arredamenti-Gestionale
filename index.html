@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#343d47">
+<meta name="description" content="Gestionale operativo per Serafino Arredamenti">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>SERAFINO | Gestionale</title>
 <style>
 :root{--ink:#35404b;--muted:#7d858c;--line:#e7e8e8;--paper:#fff;--bg:#f5f5f3;--sand:#d7c8b2;--sand-light:#f0e9df;--green:#537967;--red:#a95555;--blue:#547b9d;--shadow:0 8px 28px rgba(43,49,54,.06)}
@@ -16,7 +20,7 @@
 <div class="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">
-    <img src="assets/logo-serafino.png" alt="SERAFINO — Sogna. Arreda. Vivi." onerror="this.style.display='none';document.getElementById('brandFallback').classList.remove('hidden')">
+    <img src="logo-serafino-wordmark.png" alt="SERAFINO — Sogna. Arreda. Vivi." onerror="this.style.display='none';document.getElementById('brandFallback').classList.remove('hidden')">
     <div id="brandFallback" class="hidden"><div class="brand-fallback">SERAFINO</div><small>SOGNA. ARREDA. VIVI.</small></div>
   </div>
   <div class="nav-label">GESTIONE AZIENDALE</div>
@@ -92,8 +96,8 @@ function dashboard(){
  <div class="stat"><div class="stat-top">Preventivi aperti <span class="stat-icon">▤</span></div><div class="stat-value">${db.preventivi.filter(p=>!['Accettato','Rifiutato'].includes(p.stato)).length}</div><div class="stat-note">Da seguire o confermare</div></div>
  <div class="stat"><div class="stat-top">Ordini attivi <span class="stat-icon">▣</span></div><div class="stat-value">${db.ordini.length}</div><div class="stat-note">Ordini registrati</div></div>
  <div class="stat"><div class="stat-top">Residuo ordini demo <span class="stat-icon">€</span></div><div class="stat-value" style="font-size:22px">${euro(Math.max(0,residuo))}</div><div class="stat-note">Stima da ordini meno pagamenti registrati</div></div></div>
- <div class="grid-two"><div>${panel('Ordini recenti','Stato degli ordini registrati',table(['ORDINE / CLIENTE','DATA','TOTALE','STATO'],rows),'goTo(\\'ordini\\')')}${panel('Attività da seguire','Promemoria generati dai dati attuali',`<div class="task-list">${tasks.length?tasks.map(t=>`<div class="task"><span class="task-mark"></span><div class="task-text">${escapeHtml(t.title)}<small>${escapeHtml(t.sub)}</small></div><span class="task-date">${escapeHtml(t.date||'')}</span></div>`).join(''):'<div class="empty">Nessuna attività in evidenza.</div>'}</div>`)}</div>
- <div>${panel('Ultimi preventivi','Offerte commerciali recenti',table(['PREVENTIVO / CLIENTE','TOTALE','STATO'],db.preventivi.slice(0,4).map(p=>`<tr><td>${rowPrimary(p.numero,p.cliente)}</td><td>${euro(p.totale)}</td><td>${pill(p.stato)}</td></tr>`).join('')),'goTo(\\'preventivi\\')')}${panel('Accesso rapido','Le operazioni più frequenti',`<div class="task-list"><div class="task"><span class="activity-icon">♙</span><div class="task-text">Aggiungi un cliente<small>Crea una nuova anagrafica</small></div><button class="btn btn-secondary" onclick="newRecord('clienti')">Apri</button></div><div class="task"><span class="activity-icon">▤</span><div class="task-text">Crea un preventivo<small>Prepara una nuova offerta</small></div><button class="btn btn-secondary" onclick="newRecord('preventivi')">Apri</button></div><div class="task"><span class="activity-icon">▣</span><div class="task-text">Registra un ordine<small>Segui una vendita</small></div><button class="btn btn-secondary" onclick="newRecord('ordini')">Apri</button></div></div>`)}</div></div>
+ <div class="grid-two"><div>${panel('Ordini recenti','Stato degli ordini registrati',table(['ORDINE / CLIENTE','DATA','TOTALE','STATO'],rows),'goTo(\'ordini\')')}${panel('Attività da seguire','Promemoria generati dai dati attuali',`<div class="task-list">${tasks.length?tasks.map(t=>`<div class="task"><span class="task-mark"></span><div class="task-text">${escapeHtml(t.title)}<small>${escapeHtml(t.sub)}</small></div><span class="task-date">${escapeHtml(t.date||'')}</span></div>`).join(''):'<div class="empty">Nessuna attività in evidenza.</div>'}</div>`)}</div>
+ <div>${panel('Ultimi preventivi','Offerte commerciali recenti',table(['PREVENTIVO / CLIENTE','TOTALE','STATO'],db.preventivi.slice(0,4).map(p=>`<tr><td>${rowPrimary(p.numero,p.cliente)}</td><td>${euro(p.totale)}</td><td>${pill(p.stato)}</td></tr>`).join('')),'goTo(\'preventivi\')')}${panel('Accesso rapido','Le operazioni più frequenti',`<div class="task-list"><div class="task"><span class="activity-icon">♙</span><div class="task-text">Aggiungi un cliente<small>Crea una nuova anagrafica</small></div><button class="btn btn-secondary" onclick="newRecord('clienti')">Apri</button></div><div class="task"><span class="activity-icon">▤</span><div class="task-text">Crea un preventivo<small>Prepara una nuova offerta</small></div><button class="btn btn-secondary" onclick="newRecord('preventivi')">Apri</button></div><div class="task"><span class="activity-icon">▣</span><div class="task-text">Registra un ordine<small>Segui una vendita</small></div><button class="btn btn-secondary" onclick="newRecord('ordini')">Apri</button></div></div>`)}</div></div>
  <div class="footer-note">Nota: i dati iniziali sono dimostrativi e vengono salvati solo in questo browser. Non usare ancora dati reali dei clienti.</div>`;
 }
 const configs={
@@ -122,7 +126,7 @@ function renderStats(){
 function renderSettings(){
  return heading(pages.utenti.title,pages.utenti.sub,'Aggiungi utente')+
  `<div class="notice"><strong>Importante:</strong> questa versione è un prototipo locale. Gli account elencati non hanno ancora credenziali reali e non costituiscono un sistema di autenticazione. Prima di utilizzarlo con dati aziendali, servirà configurare accessi individuali e database online sicuro.</div>`+
- `<div class="grid-two">${panel('Utenti registrati','Elenco dimostrativo',renderListInner('utenti'))}${panel('Configurazione aziendale','Dati da personalizzare',`<div class="form-grid"><div class="field full"><label>Nome attività</label><input value="Arredamenti Serafino" readonly></div><div class="field full"><label>Payoff</label><input value="Sogna. Arreda. Vivi." readonly></div><div class="field full"><label>Logo</label><div style="padding:15px;background:#fafafa;border:1px solid var(--line);border-radius:8px"><img src="assets/logo-serafino.png" style="max-width:220px;max-height:85px;object-fit:contain" alt="Logo Serafino"></div></div></div>`)}</div>`;
+ `<div class="grid-two">${panel('Utenti registrati','Elenco dimostrativo',renderListInner('utenti'))}${panel('Configurazione aziendale','Dati da personalizzare',`<div class="form-grid"><div class="field full"><label>Nome attività</label><input value="Arredamenti Serafino" readonly></div><div class="field full"><label>Payoff</label><input value="Sogna. Arreda. Vivi." readonly></div><div class="field full"><label>Logo</label><div style="padding:15px;background:#fafafa;border:1px solid var(--line);border-radius:8px"><img src="logo-serafino-wordmark.png" style="max-width:220px;max-height:85px;object-fit:contain" alt="Logo Serafino"></div></div></div>`)}</div>`;
 }
 function renderListInner(key){let cfg=configs[key],records=db[key]||[];return records.length?table(cfg.cols.map(c=>c[0]),records.map(r=>`<tr>${cfg.cols.map(c=>`<td>${c[2]==='pill'?pill(r[c[1]]):escapeHtml(r[c[1]]||'—')}${c[2]&&c[2]!=='pill'&&c[2]!=='money'?`<div class="sub-cell">${escapeHtml(r[c[2]]||'')}</div>`:''}</td>`).join('')}</tr>`).join('')):'<div class="empty">Nessun utente registrato.</div>'}
 function render(){
@@ -155,6 +159,7 @@ function openForm(key,id){
 function closeModal(){document.getElementById('modalRoot').innerHTML=''}
 function exportCsv(key){const rows=db[key]||[];if(!rows.length){toast('Nessun record da esportare.');return}const cols=Object.keys(rows[0]);const csv=[cols.join(';'),...rows.map(r=>cols.map(c=>`"${String(r[c]??'').replace(/"/g,'""')}"`).join(';'))].join('\r\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`serafino-${key}.csv`;a.click();URL.revokeObjectURL(a.href);toast('Esportazione CSV avviata.')}
 render();
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service Worker non registrato:', err))); }
 </script>
 </body>
 </html>
